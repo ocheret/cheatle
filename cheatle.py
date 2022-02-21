@@ -7,21 +7,55 @@ dictionary_file = "fivechars.txt"
 
 alphabet = "[abcdefghijklmnopqrstuvwxyz]"
 
-def read_dictionary(dictionary_file = dictionary_file):
-    with open(dictionary_file) as file:
-        words = [line.rstrip() for line in file]
-    return words
+class Cheatle:
+    """Search a dictionary based on Wordle clues"""
+    def __init__(self, filename=dictionary_file):
+        self.dictionary_file = filename
+        self.reset()
+
+    def reset(self):
+        self.read_dictionary(self.dictionary_file)
+        self.remaining = [alphabet for i in range(0, 5)]
+        self.required = set()
+
+    def read_dictionary(self, filename):
+        with open(filename) as file:
+            self.words = [line.rstrip() for line in file]
+
+    def remove_letter(self, pos, letter):
+        self.remaining[pos] = self.remaining[pos].replace(letter, '')
+
+    def not_in_word(self, letter):
+        for pos in range(0, 5):
+            self.remove_letter(pos, tokens[1])
+
+    def placed_in_word(self, pos, letter):
+        self.remaining[pos] = letter
+        if letter in self.required:
+            self.required.remove(letter)
+
+    def misplaced_in_word(self, pos, letter):
+        self.remove_letter(pos, letter)
+        self.required.add(letter)
+
+    def has_required(self, word):
+        for l in self.required:
+            if l not in word:
+                return False
+        return True
+
+    def filter(self):
+        search_expression = "".join(self.remaining)
+        prog = re.compile(search_expression)
+        x = self.words
+        x = [w for w in x if prog.match(w) and self.has_required(w)]
+        self.words = x
+
+    def get_words(self):
+        return self.words
 
 def prompt():
     print("cheatle> ", end='', flush=True)
-
-def reset():
-    global words
-    global remaining_letters
-    global required_letters
-    words = read_dictionary()
-    remaining_letters = [alphabet for i in range(0, 5)]
-    required_letters = set()
 
 def print_help():
     print("reset : start a new cheating session")
@@ -29,30 +63,10 @@ def print_help():
     print("-N <LETTER> : letter in solution but not in Nth position")
     print("+N <LETTER> : letter is in Nth position")
     print("list : list remaining solutions")
-    print("debug : debug state dump")
     print("help : this messsage")
 
-def remove_letter(pos, letter):
-    global remaining_letters
-    remaining_letters[pos] = remaining_letters[pos].replace(letter, '')
-
-def fix_letter(pos, letter):
-    global remaining_letters
-    remaining_letters[pos] = letter
-    if letter in required_letters:
-        required_letters.remove(letter)
-
-def has_required(word):
-    for l in required_letters:
-        if l not in word:
-            return False
-    return True
-
 if __name__ == '__main__':
-    global words
-    global remaining_letters
-    global required_letters
-    reset()
+    cheatle = Cheatle()
     prompt()
     for line in fileinput.input():
         tokens = line.split()
@@ -61,41 +75,31 @@ if __name__ == '__main__':
             continue
         command = tokens[0]
         if command == 'reset':
-            reset()
+            cheatle.reset()
         elif command == 'help':
             print_help()
         elif command == '-':
             if len(tokens) != 2:
                 print_help()
                 continue
-            for pos in range(0, 5):
-                remove_letter(pos, tokens[1])
+            cheatle.not_in_word(tokens[1])
         elif command in {'-1', '-2', '-3', '-4', '-5'}:
             if len(tokens) != 2:
                 print_help()
                 continue
             pos = ord(command[1]) - ord('1')
-            remove_letter(pos, tokens[1])
-            required_letters.add(tokens[1])
+            cheatle.misplaced_in_word(pos, tokens[1])
         elif command in {'+1', '+2', '+3', '+4', '+5'}:
             if len(tokens) != 2:
                 print_help()
                 continue
             pos = ord(command[1]) - ord('1')
-            fix_letter(pos, tokens[1])
+            cheatle.placed_in_word(pos, tokens[1])
         elif command == 'list':
-            search_expression = "".join(remaining_letters)
-            prog = re.compile(search_expression)
-            words = [w for w in words if prog.match(w) and has_required(w)]
+            cheatle.filter()
+            words = cheatle.get_words()
             print("\n".join(words))
             print("count:", len(words))
-        elif command == 'debug':
-            search_expression = "".join(remaining_letters)
-            print("Regex:", search_expression)
-            print("Required:", required_letters)
-            prog = re.compile(search_expression)
-            words = [w for w in words if prog.match(w) and has_required(w)]
-            print("word count:", len(words))
         else:
             print("Invalid command")
             help()
