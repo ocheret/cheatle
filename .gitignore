@@ -1,0 +1,13 @@
+*~
+*.swp
+.DS_Store
+*.o
+*.pyc
+make.out.*
+*.zip
+*.png
+*.gif
+*.jpg
+*.ppm
+tmp/
+Build/
