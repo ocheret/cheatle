@@ -1339,6 +1339,7 @@ capon
 capot
 cappy
 capsa
+caput
 carat
 carbo
 cardo
