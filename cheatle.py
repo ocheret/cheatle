@@ -102,6 +102,6 @@ if __name__ == '__main__':
             print("count:", len(words))
         else:
             print("Invalid command")
-            help()
+            print_help()
         prompt()
     print("\nBye")
