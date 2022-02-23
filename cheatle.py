@@ -27,7 +27,7 @@ class Cheatle:
 
     def not_in_word(self, letter):
         for pos in range(0, 5):
-            self.remove_letter(pos, tokens[1])
+            self.remove_letter(pos, letter)
 
     def placed_in_word(self, pos, letter):
         self.remaining[pos] = letter
@@ -59,7 +59,7 @@ def prompt():
 
 def print_help():
     print("reset : start a new cheating session")
-    print("- <LETTER> : letter not in solution")
+    print("- <LETTERS> : letters not in solution")
     print("-N <LETTER> : letter in solution but not in Nth position")
     print("+N <LETTER> : letter is in Nth position")
     print("list : list remaining solutions")
@@ -82,7 +82,8 @@ if __name__ == '__main__':
             if len(tokens) != 2:
                 print_help()
                 continue
-            cheatle.not_in_word(tokens[1])
+            for c in tokens[1]:
+                cheatle.not_in_word(c)
         elif command in {'-1', '-2', '-3', '-4', '-5'}:
             if len(tokens) != 2:
                 print_help()
