@@ -69,6 +69,7 @@ if __name__ == '__main__':
     cheatle = Cheatle()
     prompt()
     for line in fileinput.input():
+        line = line.lower()
         tokens = line.split()
         if len(tokens) == 0:
             prompt()
@@ -79,7 +80,7 @@ if __name__ == '__main__':
         elif command == 'help':
             print_help()
         elif command == '-':
-            if len(tokens) != 2:
+            if len(tokens) < 2:
                 print_help()
                 continue
             for c in tokens[1]:

@@ -1,12 +1,14 @@
 # cheatle
 Cheat at WORDLE and other 5 letter word games
 
-Very simple command line interface. Type help to see the commands.
+Very simple command line interface.
+Case is ignored.
+Type help to see the commands.
 
 NOTE: The dictionary here might not be complete. Who knows what
 dictionaries these various games use? For example,
 /usr/share/dict/words doesn't seem to contain the word 'women'. If you
-encounter any words that are missing her feel free to file an issue.
+encounter any words that are missing here feel free to file an issue.
 
 You still have to guess words to discover the presence and potential
 locations of letters.
