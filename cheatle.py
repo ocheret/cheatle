@@ -86,6 +86,9 @@ if __name__ == '__main__':
             for c in tokens[1]:
                 cheatle.not_in_word(c)
         elif command in {'-1', '-2', '-3', '-4', '-5'}:
+            # XXX - if a letter is misplaced more than 1 time in a single
+            # guess then the letter must be repeated at least that many
+            # times in the word. What's a good way to capture this here?
             if len(tokens) != 2:
                 print_help()
                 continue
