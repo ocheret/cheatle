@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import fileinput
+import os
 import re
 
-dictionary_file = "../fivechars.txt"
+dictionary_file = os.path.join(
+    os.path.split(os.path.realpath(os.path.dirname(__file__)))[0],
+    "fivechars.txt")
 
 alphabet = "[abcdefghijklmnopqrstuvwxyz]"
 
