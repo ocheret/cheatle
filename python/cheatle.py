@@ -3,7 +3,7 @@
 import fileinput
 import re
 
-dictionary_file = "fivechars.txt"
+dictionary_file = "../fivechars.txt"
 
 alphabet = "[abcdefghijklmnopqrstuvwxyz]"
 
@@ -15,7 +15,7 @@ class Cheatle:
 
     def reset(self):
         self.read_dictionary(self.dictionary_file)
-        self.remaining = [alphabet for i in range(0, 5)]
+        self.remaining = [alphabet] * 5
         self.required = set()
 
     def read_dictionary(self, filename):
