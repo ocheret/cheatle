@@ -81,7 +81,7 @@ func (c *Cheatle) Filter() {
 	filtered := make([]int, 0)
 	for _, index := range c.indices {
 		w := words[index]
-		if prog.MatchString(w) && c.HasRequired(w) {
+		if c.HasRequired(w) && prog.MatchString(w) {
 			filtered = append(filtered, index)
 		}
 	}
