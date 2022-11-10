@@ -80,7 +80,8 @@ func (c *Cheatle) Filter() {
 	prog := regexp.MustCompile(expr)
 	filtered := make([]int, 0)
 	for _, index := range c.indices {
-		if prog.MatchString(words[index]) {
+		w := words[index]
+		if prog.MatchString(w) && c.HasRequired(w) {
 			filtered = append(filtered, index)
 		}
 	}
