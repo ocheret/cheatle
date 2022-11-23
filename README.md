@@ -1,6 +1,9 @@
 # cheatle
 Cheat at WORDLE and other 5 letter word games
 
+For fun, there are implementations in Python and Go. Eventually, there will
+be versions in Rust, Swift, C, C++, JavaScript (nodejs and in browser).
+
 Very simple command line interface.
 Case is ignored.
 Type help to see the commands.
@@ -15,8 +18,18 @@ locations of letters.
 
 Sample session to guess the unknown word 'while'...
 
+To run the Python version use:
 ```
-$ ./cheatle.py 
+$ ./python/pycheatle.py
+```
+
+To run the Go version use:
+```
+cd ./golang
+go run cmd/cheatle/gocheatle.go
+```
+Then try the help command:
+```
 cheatle> help
 reset : start a new cheating session
 - <LETTERS> : letters not in solution
