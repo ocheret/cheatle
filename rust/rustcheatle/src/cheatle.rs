@@ -2,10 +2,6 @@ use regex::Regex;
 use std::collections::HashSet;
 use std::sync::Once;
 
-pub fn do_something() {
-    println!("Doing something");
-}
-
 // Regular expression for the entire alphabet
 const ALPHABET: &str = "[abcdefghijklmnopqrstuvwxyz]";
 

@@ -1,6 +1,6 @@
 use std::io::Write;
 
-use rustcheatle::cheatle::{self, Cheatle};
+use rustcheatle::cheatle::Cheatle;
 use std::io;
 
 fn prompt() {
@@ -18,7 +18,6 @@ fn print_help() {
 }
 
 fn main() {
-    cheatle::do_something();
     let mut chtl = Cheatle::new();
     prompt();
     let mut buf = String::new();
