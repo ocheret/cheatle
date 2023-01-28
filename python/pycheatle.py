@@ -10,8 +10,10 @@ dictionary_file = os.path.join(
 
 alphabet = "[abcdefghijklmnopqrstuvwxyz]"
 
+
 class Cheatle:
     """Search a dictionary based on Wordle clues"""
+
     def __init__(self, filename=dictionary_file):
         self.dictionary_file = filename
         self.reset()
@@ -19,7 +21,7 @@ class Cheatle:
     def reset(self):
         self.read_dictionary(self.dictionary_file)
         self.remaining = [alphabet] * 5
-        self.required = set()
+        self.required = {}
 
     def read_dictionary(self, filename):
         with open(filename) as file:
@@ -34,16 +36,18 @@ class Cheatle:
 
     def placed_in_word(self, pos, letter):
         self.remaining[pos] = letter
-        if letter in self.required:
-            self.required.remove(letter)
 
     def misplaced_in_word(self, pos, letter):
         self.remove_letter(pos, letter)
-        self.required.add(letter)
+        if letter not in self.required:
+            self.required[letter] = 1
+
+    def set_min_occurrences(self, letter, count):
+        self.required[letter] = count
 
     def has_required(self, word):
-        for l in self.required:
-            if l not in word:
+        for letter, count in self.required.items():
+            if count > sum([1 for c in word if c == letter]):
                 return False
         return True
 
@@ -57,16 +61,20 @@ class Cheatle:
     def get_words(self):
         return self.words
 
+
 def prompt():
     print("cheatle> ", end='', flush=True)
+
 
 def print_help():
     print("reset : start a new cheating session")
     print("- <LETTERS> : letters not in solution")
     print("-N <LETTER> : letter in solution but not in Nth position")
     print("+N <LETTER> : letter is in Nth position")
+    print(">=N <LETTER>: letter occurs at least N time in word")
     print("list : list remaining solutions")
     print("help : this messsage")
+
 
 if __name__ == '__main__':
     cheatle = Cheatle()
@@ -103,6 +111,12 @@ if __name__ == '__main__':
                 continue
             pos = ord(command[1]) - ord('1')
             cheatle.placed_in_word(pos, tokens[1])
+        elif command in {">=1", ">=2", ">=3", ">=4", ">=5"}:
+            if len(tokens) != 2:
+                print_help()
+                continue
+            count = ord(command[2]) - ord('0')
+            cheatle.set_min_occurrences(tokens[1], count)
         elif command == 'list':
             cheatle.filter()
             words = cheatle.get_words()

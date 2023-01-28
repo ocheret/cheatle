@@ -20,7 +20,7 @@ func init() {
 
 type Cheatle struct {
 	remaining []string
-	required  *Set[rune]
+	required  map[rune]int
 	indices   []int
 }
 
@@ -29,7 +29,7 @@ func (c *Cheatle) Reset() {
 	for i := 0; i < 5; i++ {
 		c.remaining[i] = strings.Clone(alphabet)
 	}
-	c.required = NewSet[rune]()
+	c.required = map[rune]int{}
 	c.indices = make([]int, 0, len(words))
 	for i := range words {
 		c.indices = append(c.indices, i)
@@ -55,20 +55,22 @@ func (c *Cheatle) NotInWord(letter rune) {
 
 func (c *Cheatle) PlacedInWord(pos int, letter rune) {
 	c.remaining[pos] = string(letter)
-	if c.required.Has(letter) {
-		c.required.Remove(letter)
-	}
 }
 
 func (c *Cheatle) MisplacedInWord(pos int, letter rune) {
 	c.RemoveLeter(pos, letter)
-	c.required.Add(letter)
+	if _, ok := c.required[letter]; !ok {
+		c.required[letter] = 1
+	}
+}
+
+func (c *Cheatle) SetMinOccurences(letter rune, count int) {
+	c.required[letter] = count
 }
 
 func (c *Cheatle) HasRequired(word string) bool {
-	req := c.required.ToSlice()
-	for _, r := range req {
-		if !strings.ContainsRune(word, r) {
+	for letter, count := range c.required {
+		if count > strings.Count(word, string(letter)) {
 			return false
 		}
 	}

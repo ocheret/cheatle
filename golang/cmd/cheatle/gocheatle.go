@@ -19,6 +19,7 @@ func printHelp() {
 	fmt.Println("- <LETTERS> : letters not in solution")
 	fmt.Println("-N <LETTER> : letter in solution but not in Nth position")
 	fmt.Println("+N <LETTER> : letter is in Nth position")
+	fmt.Println(">=N <LETTER>: letter occurs at least N time in word")
 	fmt.Println("list : list remaining solutions")
 	fmt.Println("help : this messsage")
 }
@@ -54,6 +55,18 @@ func main() {
 			words := chtl.GetWords()
 			fmt.Println(strings.Join(words, "\n"))
 			fmt.Printf("count: %d\n", len(words))
+		} else if strings.HasPrefix(command, ">=") {
+			if len(tokens) < 2 {
+				printHelp()
+				continue
+			}
+			c := []rune(command)
+			count, error := strconv.Atoi(string(c[2]))
+			if error != nil || count < 1 || count > 5 {
+				fmt.Println("Invalid count (must be 1 thru 5")
+				continue
+			}
+			chtl.SetMinOccurences([]rune(tokens[1])[0], count)
 		} else {
 			c := []rune(command)
 			if len(c) == 2 {

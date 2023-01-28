@@ -13,6 +13,7 @@ fn print_help() {
     println!("- <LETTERS> : letters not in solution");
     println!("-N <LETTER> : letter in solution but not in Nth position");
     println!("+N <LETTER> : letter is in Nth position");
+    println!(">=N <LETTER>: letter occurs at least N time in word");
     println!("list : list remaining solutions");
     println!("help : this messsage");
 }
@@ -44,7 +45,7 @@ fn main() {
                 let words = chtl.get_words();
                 println!("{}", words.join("\n"));
                 println!("count: {}", words.len());
-            }
+            },
             "-" => {
                 if tokens.len() < 2 {
                     print_help();
@@ -53,7 +54,7 @@ fn main() {
                 for c in tokens[1].chars() {
                     chtl.not_in_word(c);
                 }
-            }
+            },
             "-1" | "-2" | "-3" | "-4" | "-5" => {
                 // XXX - if a letter is misplaced more than 1 time in a single
                 // guess then the letter must be repeated at least that many
@@ -64,7 +65,7 @@ fn main() {
                 }
                 let pos = command[1..].parse::<usize>().unwrap() - 1;
                 chtl.misplaced_in_word(pos, tokens[1].chars().collect::<Vec<char>>()[0]);
-            }
+            },
             "+1" | "+2" | "+3" | "+4" | "+5" => {
                 if tokens.len() != 2 {
                     print_help();
@@ -72,6 +73,15 @@ fn main() {
                 }
                 let pos = command[1..].parse::<usize>().unwrap() - 1;
                 chtl.placed_in_word(pos, tokens[1].chars().collect::<Vec<char>>()[0]);
+            },
+            ">=1" | ">=2" | ">=3" | ">=4" | ">=5" => {
+                if tokens.len() != 2 {
+                    print_help();
+                    continue;
+                }
+                let count = command[2..].parse::<usize>().unwrap();
+                let letter = tokens[1].chars().collect::<Vec<char>>()[0];
+                chtl.set_min_occurences(letter, count);
             }
             _ => {
                 println!("Invalid command");

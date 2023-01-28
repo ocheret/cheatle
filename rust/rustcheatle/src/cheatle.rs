@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::collections::HashSet;
+use std::collections::HashMap;
 use std::sync::Once;
 
 /// Regular expression for the entire alphabet
@@ -18,8 +18,9 @@ static START: Once = Once::new();
 #[derive(Debug)]
 pub struct Cheatle {
     remaining: [String; 5],  // Regex for remaining possibilities for each position
-    required: HashSet<char>, // Set of chars which must be somewhere in the word
+    required: HashMap<char, usize>, // Set of chars which must be somewhere in the word
     indices: Vec<usize>,     // Integer indices of filtered words
+
 }
 
 /// Retrieve a word by index from the statically initialize set of words
@@ -54,7 +55,7 @@ impl Cheatle {
                 ALPHABET.to_string(),
                 ALPHABET.to_string(),
             ],
-            required: HashSet::<char>::new(),
+            required: HashMap::<char, usize>::new(),
             indices: (0..words_len).collect(),
         }
     }
@@ -80,22 +81,26 @@ impl Cheatle {
     /// Set one position's remaining possibilities to exactly on letter.
     pub fn placed_in_word(&mut self, pos: usize, letter: char) {
         self.remaining[pos] = letter.to_string();
-        if self.required.contains(&letter) {
-            self.required.remove(&letter);
-        }
     }
 
     /// Remove a letter from a certain position but note that it must be in
     /// the word somewhere.
     pub fn misplaced_in_word(&mut self, pos: usize, letter: char) {
         self.remove_letter(pos, letter);
-        self.required.insert(letter);
+        if !self.required.contains_key(&letter) {
+            self.required.insert(letter, 1);
+        }
+    }
+
+    pub fn set_min_occurences(&mut self, letter: char, count: usize) {
+        self.required.insert(letter, count);
     }
 
     /// Check if a word has all of the required letters somewhere
     fn has_required(&self, word: &str) -> bool {
-        for c in &self.required {
-            if !word.contains(&(*c).to_string()) {
+        for (letter, count) in &self.required {
+            let count_in_word = word.chars().filter(|c| c == letter).count();
+            if *count > count_in_word {
                 return false;
             }
         }
