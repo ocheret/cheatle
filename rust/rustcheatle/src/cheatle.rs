@@ -17,10 +17,9 @@ static START: Once = Once::new();
 /// Representation of a game
 #[derive(Debug)]
 pub struct Cheatle {
-    remaining: [String; 5],  // Regex for remaining possibilities for each position
+    remaining: [String; 5], // Regex for remaining possibilities for each position
     required: HashMap<char, usize>, // Set of chars which must be somewhere in the word
-    indices: Vec<usize>,     // Integer indices of filtered words
-
+    indices: Vec<usize>,    // Integer indices of filtered words
 }
 
 /// Retrieve a word by index from the statically initialize set of words
