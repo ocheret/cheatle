@@ -2,7 +2,6 @@ const fs = require("fs");
 const ALPHABET = "[abcdefghijklmnopqrstuvwxyz]";
 
 const words = fs.readFileSync("./fivechars.txt").toString().trim().split("\n");
-console.log(words.length);
 
 class Cheatle {
   constructor() {
