@@ -1,9 +1,9 @@
 # cheatle
 Cheat at WORDLE and other 5 letter word games
 
-For fun, there are implementations in Python, Go, and Rust. Eventually,
-there will be versions in Swift, C, C++, JavaScript (nodejs and in
-browser).
+For fun, there are implementations in Python, Go, Rust, and JavaScript
+for NodeJS. Eventually, there will be versions in Swift, C, C++,
+and JavaScript in the browser.
 
 Very simple command line interface.
 Case is ignored.
@@ -37,6 +37,12 @@ To run the Rust version use:
 ```
 cd ./rust/rustcheatle
 cargo run
+```
+
+To run the JavaScript (NodeJS) version use:
+```
+$ cd ./javascript
+$ node jscheatle
 ```
 
 Then try the help command:
