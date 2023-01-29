@@ -4,8 +4,7 @@ import fileinput
 import os
 import re
 
-dictionary_file = os.path.join(
-    os.path.split(os.path.realpath(os.path.dirname(__file__)))[0],
+dictionary_file = os.path.join(os.path.realpath(os.path.dirname(__file__)),
     "fivechars.txt")
 
 alphabet = "[abcdefghijklmnopqrstuvwxyz]"

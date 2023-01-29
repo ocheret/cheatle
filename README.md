@@ -10,9 +10,12 @@ Case is ignored.
 Type help to see the commands.
 
 NOTE: The dictionary here might not be complete. Who knows what
-dictionaries these various games use? For example,
-/usr/share/dict/words doesn't seem to contain the word 'women'. If you
-encounter any words that are missing here feel free to file an issue.
+dictionaries these various games use? For example, /usr/share/dict/words
+doesn't seem to contain the word 'women'. If you encounter any words
+that are missing here feel free to file an issue.  Thanks to the
+people who worked on https://github.com/dwyl/english-words and
+https://github.com/hermitdave/FrequencyWords for some inspiration
+on building a better dictionary with some word frequencies.
 
 You still have to guess words to discover the presence and potential
 locations of letters.

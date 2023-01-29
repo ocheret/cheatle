@@ -12,3 +12,4 @@ make.out.*
 tmp/
 Build/
 target/
+potential_fivechars.txt
