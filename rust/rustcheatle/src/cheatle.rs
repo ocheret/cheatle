@@ -41,9 +41,9 @@ fn get_words_length() -> usize {
     unsafe { WORDS.len() }
 }
 
-impl Cheatle {
+impl Default for Cheatle {
     /// Create a new game instance
-    pub fn new() -> Self {
+    fn default() -> Self {
         setup_words();
         let words_len = get_words_length();
         Cheatle {
@@ -58,11 +58,13 @@ impl Cheatle {
             indices: (0..words_len).collect(),
         }
     }
+}
 
+impl Cheatle {
     /// Reset the game state. Not really different from just making a new game
     /// but we're trying to be consistent with the python and go versions.
     pub fn reset(&mut self) {
-        *self = Cheatle::new();
+        *self = Cheatle::default();
     }
 
     /// Remove a letter from the remaining possibilities for one position
@@ -86,9 +88,7 @@ impl Cheatle {
     /// the word somewhere.
     pub fn misplaced_in_word(&mut self, pos: usize, letter: char) {
         self.remove_letter(pos, letter);
-        if !self.required.contains_key(&letter) {
-            self.required.insert(letter, 1);
-        }
+        self.required.entry(letter).or_insert(1);
     }
 
     pub fn set_min_occurences(&mut self, letter: char, count: usize) {

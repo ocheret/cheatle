@@ -19,7 +19,7 @@ fn print_help() {
 }
 
 fn main() {
-    let mut chtl = Cheatle::new();
+    let mut chtl = Cheatle::default();
     prompt();
     let mut buf = String::new();
     while let Ok(count) = io::stdin().read_line(&mut buf) {
@@ -29,7 +29,7 @@ fn main() {
         }
         let line = buf.trim().to_lowercase();
         let tokens: Vec<&str> = line.split_whitespace().collect();
-        if tokens.len() == 0 || tokens[0] == "" {
+        if tokens.is_empty() || tokens[0].is_empty() {
             prompt();
             continue;
         }
